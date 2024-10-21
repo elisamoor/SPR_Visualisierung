@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SPR Visualisierung</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="module">
+      // fetching the csv file and making it accessible as an array of objects
+      const data = await d3.csv("DHdataVis.csv");
+      console.log(data);
+      let filteredData = [data, data];
+      let filters = [{}, {}];
+
+      /**
+       * Function to restrict the data based on the selected values.
+       * @param {Event} e Input event. we currently only use the value of the Select element.
+       * @param {string} key The key of the filter object. may be any key of the data object.
+       * @param {number} dataIndex The index of the data array to filter.
+       */
+      function restrictData(e, key, dataIndex) {
+        const value = e.target.value;
+        if (value) {
+          filters[dataIndex][key] = value;
+        } else {
+          delete filters[dataIndex][key];
+        }
+        filteredData[dataIndex] = data.filter((d) =>
+          Object.entries(filters[dataIndex]).every(
+            ([key, value]) => d[key] === value
+          )
+        );
+        document.querySelector(
+          `.chart#section${dataIndex + 1} .dataset-size`
+        ).textContent = `Es wurden ${filteredData[dataIndex].length} Datensätze selektiert`;
+        console.log(filteredData[dataIndex]);
+      }
+
+      // creating the select elements for the filters
+
+      // gender
+      const genderRange = new Set(data.map((d) => d.gender));
+      const genderSelect = document.querySelectorAll(".chart .gender");
+      genderSelect.forEach((select, i) => {
+        genderRange.forEach((gender) => {
+          const option = document.createElement("option");
+          option.value = gender;
+          option.text = gender;
+          select.appendChild(option);
+        });
+        // when the select element changes, filter the data
+        select.addEventListener("change", (e) => restrictData(e, "gender", i));
+      });
+
+      // bildung
+      const bildungRange = new Set(data.map((d) => d.bildung));
+      const bildungSelect = document.querySelectorAll(".chart .bildung");
+      bildungSelect.forEach((select, i) => {
+        bildungRange.forEach((bildung) => {
+          const option = document.createElement("option");
+          option.value = bildung;
+          option.text = bildung;
+          select.appendChild(option);
+        });
+        // when the select element changes, filter the data
+        select.addEventListener("change", (e) => restrictData(e, "bildung", i));
+      });
+    </script>
+  </head>
+  <body>
+    <h1>SPR Visualisierung</h1>
+
+    <p>Dies ist ein Introtext</p>
+    <section class="chart" id="section1">
+      <form>
+        <label for="gender">Geschlecht:</label>
+        <select class="gender" name="gender">
+          <option value="">Alle</option>
+        </select>
+        <label for="bildung">Bildungsgrad:</label>
+        <select class="bildung" name="bildung">
+          <option value="">Alle</option>
+        </select>
+      </form>
+      <p class="dataset-size">Es wurden x Datensätze selektiert</p>
+      <button class="button">Visualisierung generieren</button>
+    </section>
+    <section class="chart" id="section2">
+      <form>
+        <label for="gender">Geschlecht:</label>
+        <select class="gender" name="gender">
+          <option value="">Alle</option>
+        </select>
+        <label for="bildung">Bildungsgrad:</label>
+        <select class="bildung" name="bildung">
+          <option value="">Alle</option>
+        </select>
+      </form>
+      <p class="dataset-size">Es wurden x Datensätze selektiert</p>
+      <button class="button">Visualisierung generieren</button>
+    </section>
+  </body>
+</html>
