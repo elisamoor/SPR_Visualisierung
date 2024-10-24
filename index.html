@@ -8,6 +8,7 @@
     <script type="module">
       // fetching the csv file and making it accessible as an array of objects
       const data = await d3.csv("DHdataVis.csv");
+      console.log("hello world");
       console.log(data);
       let filteredData = [data, data];
       let filters = [{}, {}];
@@ -18,8 +19,7 @@
        * @param {string} key The key of the filter object. may be any key of the data object.
        * @param {number} dataIndex The index of the data array to filter.
        */
-      function restrictData(e, key, dataIndex) {
-        const value = e.target.value;
+      function restrictData(value, key, dataIndex) {
         if (value) {
           filters[dataIndex][key] = value;
         } else {
@@ -36,12 +36,16 @@
         console.log(filteredData[dataIndex]);
       }
 
+      function generateVis(index) {
+        console.log("generating vis for section", index + 1);
+        //these are your data: filteredData[index]
+      }
       // creating the select elements for the filters
 
       // gender
       const genderRange = new Set(data.map((d) => d.gender));
-      const genderSelect = document.querySelectorAll(".chart .gender");
-      genderSelect.forEach((select, i) => {
+      const genderSelects = document.querySelectorAll(".chart .gender"); //".chart .gender" != ".chart.gender" != ".chart,.gender"
+      genderSelects.forEach((select, index) => {
         genderRange.forEach((gender) => {
           const option = document.createElement("option");
           option.value = gender;
@@ -49,7 +53,9 @@
           select.appendChild(option);
         });
         // when the select element changes, filter the data
-        select.addEventListener("change", (e) => restrictData(e, "gender", i));
+        select.addEventListener("change", (event) =>
+          restrictData(event.target.value, "gender", index)
+        );
       });
 
       // bildung
@@ -63,9 +69,20 @@
           select.appendChild(option);
         });
         // when the select element changes, filter the data
-        select.addEventListener("change", (e) => restrictData(e, "bildung", i));
+        select.addEventListener("change", (event) =>
+          restrictData(event.target.value, "bildung", i)
+        );
+      });
+      const buttons = document.querySelectorAll(".chart .button");
+      buttons.forEach((button, index) => {
+        button.addEventListener("click", () => generateVis(index));
       });
     </script>
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <h1>SPR Visualisierung</h1>
@@ -73,7 +90,7 @@
     <p>Dies ist ein Introtext</p>
     <section class="chart" id="section1">
       <form>
-        <label for="gender">
+        <label>
           Geschlecht:
           <select class="gender" name="gender">
             <option value="">Alle</option>
@@ -86,12 +103,13 @@
           </select>
         </label>
       </form>
-      <p class="dataset-size">Es wurden x Datensätze selektiert</p>
+      <p class="dataset-size">Es wurden x Datensätze selektiert.</p>
       <button class="button">Visualisierung generieren</button>
     </section>
+    <section class="vis hidden" id="vis1">Visualisierung</section>
     <section class="chart" id="section2">
       <form>
-        <label for="gender">
+        <label>
           Geschlecht:
           <select class="gender" name="gender">
             <option value="">Alle</option>
@@ -104,8 +122,9 @@
           </select>
         </label>
       </form>
-      <p class="dataset-size">Es wurden x Datensätze selektiert</p>
+      <p class="dataset-size">Es wurden x Datensätze selektiert.</p>
       <button class="button">Visualisierung generieren</button>
     </section>
+    <section class="vis hidden" id="vis2">Visualisierung</section>
   </body>
 </html>
