@@ -41,6 +41,51 @@
         //these are your data: filteredData[index]
       }
       // creating the select elements for the filters
+      // sentence
+      const sentenceRange = new Set(data.map((d) => d.sentence));
+      const sentenceSelects = document.querySelectorAll(".chart .sentence");
+      sentenceSelects.forEach((select, index) => {
+        sentenceRange.forEach((sentence) => {
+          const option = document.createElement("option");
+          option.value = sentence;
+          option.text = sentence;
+          select.appendChild(option);
+        });
+        // when the select element changes, filter the data
+        select.addEventListener("change", (event) => {
+          const selectedSentence = event.target.value;
+          // Filter data based on the selected sentence
+          restrictData(selectedSentence, "sentence", index);
+          // Find the corresponding stimType
+          const stimType = data.find((d) => d.sentence === selectedSentence)?.stimType;
+          // Update the message based on stimType
+          const messageElement = document.querySelector(`.chart#section${index + 1} .stimType-message`);
+          if (stimType === "StimuliGS") {
+            messageElement.textContent = "Dieser Satz ist mit dem Genderstern geschrieben.";
+          } else if (stimType === "StimuliGM") {
+            messageElement.textContent = "Dieser Satz ist im generischen Maskulinum geschrieben.";
+          } else {
+            messageElement.textContent = ""; // Clear the message if no sentence is selected
+            }
+          });
+
+      });
+
+      // exposure
+      const exposureRange = new Set(data.map((d) => d.exposure));
+      const exposureSelects = document.querySelectorAll(".chart .exposure");
+      exposureSelects.forEach((select, index) => {
+        exposureRange.forEach((exposure) => {
+          const option = document.createElement("option");
+          option.value = exposure;
+          option.text = exposure;
+          select.appendChild(option);
+        });
+        // when the select element changes, filter the data
+        select.addEventListener("change", (event) =>
+          restrictData(event.target.value, "exposure", index)
+        );
+      });
 
       // gender
       const genderRange = new Set(data.map((d) => d.gender));
@@ -73,6 +118,22 @@
           restrictData(event.target.value, "bildung", i)
         );
       });
+
+      // age
+      const ageGroupsRange = new Set(data.map((d) => d.ageGroups));
+      const ageGroupsSelect = document.querySelectorAll(".chart .ageGroups");
+      ageGroupsSelect.forEach((select, i) => {
+        ageGroupsRange.forEach((ageGroups) => {
+          const option = document.createElement("option");
+          option.value = ageGroups;
+          option.text = ageGroups;
+          select.appendChild(option);
+        });
+        // when the select element changes, filter the data
+        select.addEventListener("change", (event) =>
+          restrictData(event.target.value, "ageGroups", i)
+        );
+      });      
       const buttons = document.querySelectorAll(".chart .button");
       buttons.forEach((button, index) => {
         button.addEventListener("click", () => generateVis(index));
@@ -85,30 +146,24 @@
     </style>
   </head>
   <body>
-    <h1>SPR Visualisierung - Experiment SPR</h1>
+    <h1>SPR Visualisierung - Experiment</h1>
 
     <p>Dies ist ein Introtext</p>
     <section class="chart" id="section1">
       <form>
         <label>
-          Geschlecht:
-          <select class="gender" name="gender">
+          Satz:
+          <select class="sentence" name="sentence">
+            <option value="">Alle</option>
+          </select>
+          <p class="stimType-message"></p>
+        </label>
+        <label>
+          Aussetzung:
+          <select class="exposure" name="exposure">
             <option value="">Alle</option>
           </select>
         </label>
-        <label for="bildung">
-          Bildungsgrad:
-          <select class="bildung" name="bildung">
-            <option value="">Alle</option>
-          </select>
-        </label>
-      </form>
-      <p class="dataset-size">Es wurden alle Datensätze selektiert.</p>
-      <button class="button">Visualisierung generieren</button>
-    </section>
-    <section class="vis hidden" id="vis1">Visualisierung</section>
-    <section class="chart" id="section2">
-      <form>
         <label>
           Geschlecht:
           <select class="gender" name="gender">
@@ -121,10 +176,55 @@
             <option value="">Alle</option>
           </select>
         </label>
+        <label for="ageGroups">
+          Alter:
+          <select class="ageGroups" name="ageGroups">
+            <option value="">Alle</option>
+          </select>
+        </label>
       </form>
       <p class="dataset-size">Es wurden alle Datensätze selektiert.</p>
       <button class="button">Visualisierung generieren</button>
     </section>
-    <section class="vis hidden" id="vis2">Visualisierung</section>
+    <section class="vis hidden" id="vis1">Visualisierung 1</section>
+    
+    <section class="chart" id="section2">
+      <form>
+        <label>
+          Satz:
+          <select class="sentence" name="sentence">
+            <option value="">Alle</option>
+          </select>
+          <p class="stimType-message"></p>
+        </label>
+        <label>
+          Aussetzung:
+          <select class="exposure" name="exposure">
+            <option value="">Alle</option>
+          </select>
+        </label>
+        <label>
+          Geschlecht:
+          <select class="gender" name="gender">
+            <option value="">Alle</option>
+          </select>
+        </label>
+        <label for="bildung">
+          Bildungsgrad:
+          <select class="bildung" name="bildung">
+            <option value="">Alle</option>
+          </select>
+        </label>
+        <label for="ageGroups">
+          Alter:
+          <select class="ageGroups" name="ageGroups">
+            <option value="">Alle</option>
+          </select>
+        </label>
+      </form>
+      <p class="dataset-size">Es wurden alle Datensätze selektiert.</p>
+      <button class="button">Visualisierung generieren</button>
+    </section>
+    <section class="vis hidden" id="vis2">Visualisierung 2</section>
   </body>
 </html>
