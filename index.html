@@ -36,10 +36,24 @@
         console.log(filteredData[dataIndex]);
       }
 
-      function generateVis(index) {
-        console.log("generating vis for section", index + 1);
-        //these are your data: filteredData[index]
+      function generateVis(index, words, normalizedTimes) {
+        console.log("Generating visualization for section", index + 1);
+
+        // Get the visualization container for the current section
+        const visContainer = document.querySelector(`.vis#vis${index + 1}`);
+        visContainer.classList.remove("hidden"); // Unhide the visualization section
+        visContainer.innerHTML = ""; // Clear any existing content
+
+        // Dynamically create and style words
+        words.forEach((word, wordIndex) => {
+          const span = document.createElement("span");
+          span.textContent = word;
+          span.style.fontStretch = `${normalizedTimes[wordIndex]}%`; // Stretch font based on reaction time
+          span.style.marginRight = "10px"; // Add some spacing between words
+          visContainer.appendChild(span);
+        });
       }
+
       // creating the select elements for the filters
       // sentence
       const sentenceRange = new Set(data.map((d) => d.sentence));
@@ -51,24 +65,29 @@
           option.text = sentence;
           select.appendChild(option);
         });
-        // when the select element changes, filter the data
+
+        // when the select element changes, filter the data and update the message
         select.addEventListener("change", (event) => {
           const selectedSentence = event.target.value;
+
           // Filter data based on the selected sentence
           restrictData(selectedSentence, "sentence", index);
+
           // Find the corresponding stimType
           const stimType = data.find((d) => d.sentence === selectedSentence)?.stimType;
+
           // Update the message based on stimType
-          const messageElement = document.querySelector(`.chart#section${index + 1} .stimType-message`);
+          const messageElement = document.querySelector(
+            `.chart#section${index + 1} .stimType-message`
+          );
           if (stimType === "StimuliGS") {
             messageElement.textContent = "Dieser Satz ist mit dem Genderstern geschrieben.";
           } else if (stimType === "StimuliGM") {
             messageElement.textContent = "Dieser Satz ist im generischen Maskulinum geschrieben.";
           } else {
             messageElement.textContent = ""; // Clear the message if no sentence is selected
-            }
-          });
-
+          }
+        });
       });
 
       // exposure
@@ -89,7 +108,7 @@
 
       // gender
       const genderRange = new Set(data.map((d) => d.gender));
-      const genderSelects = document.querySelectorAll(".chart .gender"); //".chart .gender" != ".chart.gender" != ".chart,.gender"
+      const genderSelects = document.querySelectorAll(".chart .gender");
       genderSelects.forEach((select, index) => {
         genderRange.forEach((gender) => {
           const option = document.createElement("option");
@@ -133,22 +152,72 @@
         select.addEventListener("change", (event) =>
           restrictData(event.target.value, "ageGroups", i)
         );
-      });      
+      });
+
       const buttons = document.querySelectorAll(".chart .button");
       buttons.forEach((button, index) => {
-        button.addEventListener("click", () => generateVis(index));
+        button.addEventListener("click", () => {
+          // Get the selected sentence
+          const sentenceSelect = document.querySelector(
+            `.chart#section${index + 1} .sentence`
+          );
+          const selectedSentence = sentenceSelect.value;
+
+          if (!selectedSentence) {
+            alert("Bitte wählen Sie einen Satz aus!"); // Alert if no sentence is selected
+            return;
+          }
+
+          // Split the sentence into words
+          const words = selectedSentence.split(" ");
+
+          // Calculate mean reaction times for each word
+          const meanReactionTimes = words.map((_, wordIndex) => {
+            const key = `word${wordIndex + 1}`; // word1, word2, ..., word10
+            const times = filteredData[index].map((d) => +d[key]); // Get reaction times
+            return times.reduce((sum, t) => sum + t, 0) / times.length; // Calculate mean
+          });
+
+          // Normalize reaction times to a range suitable for font-stretch
+          const normalize = (
+            value,
+            min = 100,
+            max = 3000,
+            newMin = 50,
+            newMax = 200
+          ) => {
+            return (
+              ((value - min) * (newMax - newMin)) / (max - min) + newMin
+            );
+          };
+
+          const normalizedTimes = meanReactionTimes.map((time) =>
+            Math.min(Math.max(normalize(time, 100, 3000, 50, 200), 50), 200) // Clamp values between 50% and 200%
+          );
+
+          // Generate the visualization
+          generateVis(index, words, normalizedTimes);
+        });
       });
     </script>
     <style>
       .hidden {
         display: none;
       }
+      .vis {
+        margin-top: 20px; /* Space above the visualization */
+        margin-bottom: 40px; /* Space below the visualization */
+      }
+
     </style>
   </head>
   <body>
     <h1>SPR Visualisierung - Experiment</h1>
 
-    <p>Dies ist ein Introtext. Ich verändere das jetzt ein wenig um zu sehen, ob mit dem commit jetzt effekitv alles funktioniert. </p>
+    <p>
+      Dies ist ein Introtext. Ich verändere das jetzt ein wenig um zu sehen, ob
+      mit dem commit jetzt effekitv alles funktioniert.
+    </p>
     <section class="chart" id="section1">
       <form>
         <label>
@@ -187,7 +256,9 @@
       <button class="button">Visualisierung generieren</button>
     </section>
     <section class="vis hidden" id="vis1">Visualisierung 1</section>
-    
+
+    <hr style="margin: 40px 0; border: 1px solid #ccc;" />
+
     <section class="chart" id="section2">
       <form>
         <label>
