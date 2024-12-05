@@ -7,10 +7,10 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="module"> //script in 
       // fetching the csv file and making it accessible as an array of objects
-      const data = await d3.csv("DHdataVis.csv");
+      const data = await d3.csv("DHdataVis.csv"); // fetches the CSV file and converts it into an array of objects 
       console.log("hello world");
       console.log(data);
-      let filteredData = [data, data];
+      let filteredData = [data, data]; // stores subsets of the data (based on dropdown selection)
       let filters = [{}, {}];
 
       /**
@@ -19,7 +19,7 @@
        * @param {string} key The key of the filter object. may be any key of the data object.
        * @param {number} dataIndex The index of the data array to filter.
        */
-      function restrictData(value, key, dataIndex) {
+      function restrictData(value, key, dataIndex) { // filters the data when users change the dropdown selection
         if (value) {
           filters[dataIndex][key] = value;
         } else {
@@ -32,20 +32,20 @@
         );
         document.querySelector(
           `.chart#section${dataIndex + 1} .dataset-size`
-        ).textContent = `Es wurden ${filteredData[dataIndex].length} Datensätze selektiert`;
+        ).textContent = `Es wurden ${filteredData[dataIndex].length} Datensätze selektiert`; // updates the message below the dropdown telling the number of selected datasets
         console.log(filteredData[dataIndex]);
       }
 
-      function generateVis(index, words, normalizedTimes) {
+      function generateVis(index, words, normalizedTimes) { //creates visualisation of selected sentence
         console.log("Generating visualization for section", index + 1);
 
         // Get the visualization container for the current section
         const visContainer = document.querySelector(`.vis#vis${index + 1}`);
-        visContainer.classList.remove("hidden"); // Unhide the visualization section
+        visContainer.classList.remove("hidden"); // Unhide the visualization section - as part of the generateVis function 
         visContainer.innerHTML = ""; // Clear any existing content
 
         // Dynamically create and style words
-        words.forEach((word, wordIndex) => {
+        words.forEach((word, wordIndex) => { //creates visualisation of selected sentence - splits it in individual words
           const span = document.createElement("span");
           span.textContent = word;
           span.style.fontStretch = `${normalizedTimes[wordIndex]}%`; // Stretch font based on reaction time
@@ -101,7 +101,7 @@
           select.appendChild(option);
         });
         // when the select element changes, filter the data
-        select.addEventListener("change", (event) =>
+        select.addEventListener("change", (event) => // when a dropdown selection changes, the data is filtered and message updated
           restrictData(event.target.value, "exposure", index)
         );
       });
@@ -201,10 +201,10 @@
       });
     </script>
     <style> /* style, working on aesthetics and/or controlling elements (e.g. hiding) with CSS */
-      .hidden {
+      .hidden { /* hides the element, visualisation as long as the visualisation is not generated (through button press) */
         display: none;
       }
-      .vis {
+      .vis { /* vis styles the visualisation, feel free to add elements here */
         margin-top: 20px; /* Space above the visualization */
         margin-bottom: 40px; /* Space below the visualization */
       }
@@ -240,7 +240,7 @@
           <p class="stimType-message"></p>
         </label>
         <label>
-          Aussetzung:
+          Exposure:
           <select class="exposure" name="exposure">
             <option value="">Alle</option>
           </select>
@@ -267,7 +267,7 @@
       <p class="dataset-size">Es wurden alle Datensätze selektiert.</p>
       <button class="button">Visualisierung generieren</button>
     </section>
-    <section class="vis hidden" id="vis1">Visualisierung 1</section>
+    <section class="vis hidden" id="vis1">Visualisierung 1</section> <!-- contains two different class; vis and hidden --> 
 
     <hr style="margin: 40px 0; border: 1px solid #ccc;" />
 
@@ -281,7 +281,7 @@
           <p class="stimType-message"></p>
         </label>
         <label>
-          Aussetzung:
+          Exposure:
           <select class="exposure" name="exposure">
             <option value="">Alle</option>
           </select>
