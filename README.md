@@ -4,7 +4,9 @@ This project visualizes reaction time data from my master thesis (Moor, 2024), s
 
 ## Folder structure 
 ├── DHdataVis.csv    # Data file with reaction times
+
 ├── index.html       # Main HTML file with HTML, CSS and JS.
+
 └── README.md        # This file
 
 Master thesis: Moor, E. (2024). The Processing Cost of the Genderstern – A Word-By-Word Self-Paced Reading Study with L1 Speakers of German [Unpublished master’s thesis]. Center for the Study of Language and Society, Universität Bern.
