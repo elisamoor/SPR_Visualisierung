@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SPR Visualisierung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&display=swap" rel="stylesheet">
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="module"> //script in
       // fetching the csv file and making it accessible as an array of objects
@@ -204,14 +207,6 @@
       });
     </script>
     <style> /* style, working on aesthetics and/or controlling elements (e.g. hiding) with CSS */
-
-      @font-face {
-        src: url("https://mdn.github.io/shared-assets/fonts/LeagueMono-VF.ttf");
-        font-family: "LeagueMonoVariable";
-        font-style: normal;
-        font-stretch: 1% 200%; /* Required by Chrome */
-      }
-
       .hidden { /* hides the element, visualisation as long as the visualisation is not generated (through button press) */
         display: none;
       }
@@ -220,8 +215,9 @@
         margin-bottom: 40px; /* Space below the visualization */
       }
       .vis span {
-        font-family: "LeagueMonoVariable", sans-serif;
+        font-family: "Inconsolata", monospace;
         font-stretch: 100%; /* 50 - 200 */
+        font-weight: 400; /* 200 - 900 */
       }
 
 
