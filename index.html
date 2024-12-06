@@ -4,9 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SPR Visualisierung</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wdth,wght,YTLC@6..12,75..125,200..1000,440..540&display=swap" rel="stylesheet">
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="module"> //script in
       // fetching the csv file and making it accessible as an array of objects
@@ -194,7 +191,7 @@
 
           const normalizedTimes = meanReactionTimes.map((time) =>
           Math.round(
-            normalize(time, minTime, maxTime, 75, 125) // Dynamically adjust the range
+            normalize(time, minTime, maxTime, 50, 200) // Dynamically adjust the range
             )
           );
 
@@ -207,6 +204,14 @@
       });
     </script>
     <style> /* style, working on aesthetics and/or controlling elements (e.g. hiding) with CSS */
+
+      @font-face {
+        src: url("https://mdn.github.io/shared-assets/fonts/LeagueMono-VF.ttf");
+        font-family: "LeagueMonoVariable";
+        font-style: normal;
+        font-stretch: 1% 200%; /* Required by Chrome */
+      }
+
       .hidden { /* hides the element, visualisation as long as the visualisation is not generated (through button press) */
         display: none;
       }
@@ -215,10 +220,8 @@
         margin-bottom: 40px; /* Space below the visualization */
       }
       .vis span {
-        font-family: "Nunito Sans", sans-serif;
-        font-stretch: 100%; /* 75 - 125 */
-        font-weight: 600; /* 200 - 1000 */
-        font-variation-settings: "YTLC" 100; /* 440 - 540 */
+        font-family: "LeagueMonoVariable", sans-serif;
+        font-stretch: 100%; /* 50 - 200 */
       }
 
 
