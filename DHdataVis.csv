@@ -1,4 +1,4 @@
-﻿mit exposure Text,stimType,sentence,word1,word2,word3,word4,word5,word6,word7,word8,word9,word10,gender,bildung,ageGroups
+﻿exposure,stimType,sentence,word1,word2,word3,word4,word5,word6,word7,word8,word9,word10,gender,bildung,ageGroups
 mit exposure Text,StimuliGM,Die Autofahrer nehmen die Ausfahrt. Eine davon verpasst sie knapp.,467,850,633,517,550,900,1067,667,667,767,männlich,Sekundarstufe II,jüngere Gruppe
 mit exposure Text,StimuliGS,Die Kunstmaler*innen zeichnen die Bäume. Eine davon kann es nicht.,434,1366,784,483,484,584,750,566,501,449,männlich,Sekundarstufe II,jüngere Gruppe
 mit exposure Text,StimuliGS,Die Kellner*innen servieren die Teller. Eine davon lässt einen fallen.,700,1068,1216,568,767,616,584,617,467,716,männlich,Sekundarstufe II,jüngere Gruppe
