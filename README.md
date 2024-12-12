@@ -13,4 +13,4 @@ Master thesis: Moor, E. (2024). The Processing Cost of the Genderstern – A Wor
 
 Elisa Moor (author of cited master thesis and student in Sociolinguistics and Digital Humanities at the university of Bern) and Sebastian Flick (computer scientist at the Digital Humanities departement of the university of Bern)
 
-Für das lokale Entwickeln Github Codespace starten und in der Kommandozeile folgenden Befehl ausführen: `npx http-server .`
+Für das lokale Entwickeln Github Codespace starten und in der Kommandozeile folgenden Befehl ausführen: ``npx http-server .
